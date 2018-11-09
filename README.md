@@ -3,19 +3,17 @@
 This repository contains a skeleton Python package project that can be used as a template for developing **any** type of Package that is destined for upload to PyPI, or just for local install using Pip. It includes the following components:
 
 - a minimal `setup.py` file;
-- tests using PyTest; and,
-- documentation (HTML and PDF) using Sphinx setup with auto-documentation; and,
-- a defined entry-point that allows the package to execute a function directly from the command line (e.g. to start a server, interact with a user, etc.).
+- testing with PyTest; and,
+- documentation (HTML and PDF) generated using Sphinx with auto-documentation setup; and,
+- an entry-point that allows the package to execute functions directly from the command line (e.g. to start a server, interact with a user, etc.).
 
 A description of how to work with (and modify) each of these components, is provided in more detail in the sections of this README that follow-on below.
-
-In order to demonstrate these components at work...
 
 This is obviously a opinionated view of how a Python package project ought to be structured, that is based largely on my own experiences (and common requirements). Where I have needed guidance on this subject, I have leant heavily on the advice given by the [Python Packaging Authority (PyPA)](https://packaging.python.org/guides/distributing-packages-using-setuptools/) and used the excellent [Requests](https://github.com/requests/requests) and [Flask](https://github.com/pallets/flask) projects as references for 'best practices'.
 
 ## Project Dependencies
 
-We use [pipenv](https://docs.pipenv.org) for managing project dependencies and Python environments (i.e. virtual environments). All of the direct packages dependencies required to run the code (e.g. NumPy for tensors), as well as all the packages used during development (e.g. flake8 for code linting and IPython for interactive console sessions), are described in the `Pipfile`. Their precise downstream dependencies are described in `Pipfile.lock`.
+We use [pipenv](https://docs.pipenv.org) for managing project dependencies and Python environments (i.e. virtual environments). This is **not** to be confused with managing installation dependencies for the package under developement - i.e. those that need to be defined in `setup.py`. All of the direct packages dependencies required to run the code (e.g. NumPy for tensors), as well as all the packages used during development (e.g. flake8 for code linting and IPython for interactive console sessions), are described in the `Pipfile`. Their precise downstream dependencies are described in `Pipfile.lock`.
 
 ### Installing Pipenv
 
@@ -60,7 +58,7 @@ pipenv run pytest
 We have chosen [flake8](http://flake8.pycqa.org/en/latest/) for style guide enforcement. This can be invoked from the command line by running,
 
 ```bash
-pipenv run flake8 my_package
+pipenv run flake8 py_pkg
 ```
 
 ## Static Type Checking
@@ -68,7 +66,7 @@ pipenv run flake8 my_package
 We have used the Python type annotation framework, together with the [MyPy package](http://mypy-lang.org), to perform static type checks on the codebase. Analogous to any linter or unit testing framework, MyPy can be run from the command line as follows,
 
 ```bash
-pipenv run python -m mypy my_module_name/*.py
+pipenv run python -m mypy py_pkg/*.py
 ```
 
 MyPy options for this project are kept in the `mypy.ini` file that MyPy will look for by default. For more information on the fulls set of options, see the [mypy documentation](https://mypy.readthedocs.io/en/stable/config_file.html).
@@ -119,7 +117,7 @@ The easiest and most pragmatic way to deploy this package is to build a Python [
 pipenv run python setup.py bdist_wheel
 ```
 
-This will create `build`, `py_pkg.egg-info` and `dist` directories - the wheel can be found in the latter. This needs to be copied to the target system (which we are assuming has Python and Pipenv available as a minimum), where it can be installed into a new virtual environment, together with all downstream dependencies, using,
+This will create `build`, `py_package_template.egg-info` and `dist` directories - the wheel can be found in the latter. This needs to be copied to the target system (which we are assuming has Python and Pipenv available as a minimum), where it can be installed into a new virtual environment, together with all downstream dependencies, using,
 
 ```bash
 pipenv install path/to/your-package.whl

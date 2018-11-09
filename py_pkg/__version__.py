@@ -2,7 +2,7 @@
 __version__.py
 ~~~~~~~~~~~~~~
 
-Information about the current version of the py_pkg package.
+Information about the current version of the py-package-template package.
 """
 
 __title__ = 'py-package-template'
