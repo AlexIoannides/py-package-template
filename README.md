@@ -1,5 +1,7 @@
 # Python Package Template Project
 
+[![image](https://img.shields.io/pypi/v/py-package-template.svg)](https://pypi.org/project/py-package-template/)
+
 This repository contains a skeleton Python package project that can be used as a template for developing **any** type of Package that is destined for upload to PyPI, or just for local install using Pip. It includes the following components:
 
 - a minimal `setup.py` file;
