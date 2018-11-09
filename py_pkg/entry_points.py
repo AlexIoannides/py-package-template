@@ -34,7 +34,7 @@ def install_template_from_github() -> None:
     """Installs the latest version of the template package project."""
 
     # check that the user really want to do this
-    msg = 'Download the Py-Pkg template project to this directory (y/n)? '
+    msg = 'Download Python package template project to this directory (y/n)? '
     user_response = input(msg)
     if user_response != 'y':
         return None

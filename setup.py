@@ -23,7 +23,7 @@ setup(
     packages=['py_pkg'],
     include_package_data=True,
     entry_points={
-        'console_scripts': ['py_pkg=py_pkg.entry_points:main'],
+        'console_scripts': ['py-package-template=py_pkg.entry_points:main'],
     },
     classifiers=[
         'Programming Language :: Python :: 3.7',
