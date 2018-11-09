@@ -6,8 +6,7 @@ Information about the current version of the py-package-template package.
 """
 
 __title__ = 'py-package-template'
-__description__ = ('py-package-template - Python Package Template Project'
-                   + 'Generator.')
+__description__ = 'py-package-template - Package Template Project Generator'
 __version__ = '0.1.2.999'
 __author__ = 'Alex Ioannides'
 __author_email__ = 'alex.ioannides@yahoo.co.uk'
