@@ -2,16 +2,16 @@
 
 [![image](https://img.shields.io/pypi/v/py-package-template.svg)](https://pypi.org/project/py-package-template/)
 
-The py-template-project package allows users to download this [GiHub repository](https://github.com/AlexIoannides/py-package-template), that contains a skeleton Python package project that can be used as a template for developing **any** type of Package that is destined for upload to PyPI, or just for local install using Pip. It includes the following components:
+The py-template-project package allows users to download the contents of this [GiHub repository](https://github.com/AlexIoannides/py-package-template),  containing a skeleton Python package project to be used as a template for kick-starting development of **any** type of Package; destined for upload to PyPI, or just for local install using Pip. The downloaded package includes the following components to aid rapid development without having to spend time cloning existing set-ups from other projects:
 
 - a minimal `setup.py` file;
-- testing with PyTest; and,
+- testing with PyTest;
 - documentation (HTML and PDF) generated using Sphinx with auto-documentation setup; and,
-- an entry-point that allows the package to execute functions directly from the command line (e.g. to start a server, interact with a user, download a GitHub repository, etc.).
+- an entry-point that allows the package to execute functions directly from the command line - e.g. to start a server, interact with a user, download a GitHub repository, etc..
 
-A description of how to work with (and modify) each of these components, is provided in more detail in the sections of this README that follow-on below, in the documentation and within the example code itself.
+A description of how to work with (and modify) each of these components, is provided in more detail in the sections that follow-on below, as well as in the documentation and within the example code bundled with the package.
 
-This is obviously a opinionated view of how a Python package project ought to be structured, that is based largely on my own experiences and requirements. Where I have needed guidance on this subject, I have leant heavily on the advice given by the [Python Packaging Authority (PyPA)](https://packaging.python.org/guides/distributing-packages-using-setuptools/) and used the excellent [Requests](https://github.com/requests/requests) and [Flask](https://github.com/pallets/flask) projects as references for 'best practices'.
+This is obviously a opinionated view of how a Python package project ought to be structured, based largely on my own experiences and requirements. Where I have needed guidance on this subject, I have leant heavily on the advice given by the [Python Packaging Authority (PyPA)](https://packaging.python.org/guides/distributing-packages-using-setuptools/) and used the excellent [Requests](https://github.com/requests/requests) and [Flask](https://github.com/pallets/flask) projects as references for 'best practices'.
 
 ## Installing
 
@@ -58,18 +58,26 @@ py-package-tempate/
 
 ## The Python Package Template Project
 
-The following part of this README describes the various components of the template project and the workflows associated with it. The template package project contains two modules to get things started:
+We now describe the various components of the template project and the workflows associated with it. The template package project contains two modules to get things started:
 
 - `curves.py`
 - `entry_points.py`
 
-The `curves.py` module contains sample code for modelling economic supply and demand curves and makes for a useful demonstration of how Python type annotation and interface definition via abstract base classes, can make code easier to read, document and reason about. The test suite for this module is contained in the `tests` folder.
+The `curves.py` module contains sample code for modelling economic supply and demand curves and makes for a useful demonstration of how Python type annotation and interface definition via abstract base classes, can make code easier to read, document and reason about (I am a big fan). The test suite for this module is contained in the `tests` folder and demonstrates how to get up-and-running with PyTest.
 
-The `entry_points.py` is linked to via the `setup.py` file via the `entry_points` definitions. It enables the declared entry point to be executed when it is called from the comment line and is what enables the template project to be downloaded programmatically. This could easily be extended to start a server or run any other type of script.
+The `entry_points.py` module is referenced in the `setup.py` file via the `entry_points` definitions:
+
+```python
+entry_points={
+    'console_scripts': ['py-package-template=py_pkg.entry_points:main'],
+}
+```
+
+It enables the declared entry point - `py_pkg.entry_points.main` -  to be invoked when `py-package-template` is called from the command line. This is what enables the template project to be downloaded programmatically (check the code for the full details). This could easily be extended to start a server (e.g. using Flask), or run any other type of script.
 
 ### Project Dependencies
 
-We use [pipenv](https://docs.pipenv.org) for managing project dependencies and Python environments (i.e. virtual environments). These dependencies are **not** to be confused with the package installation dependencies for the package under developement - i.e. those that need to be defined in the `install_requires` section of `setup.py`. All of the direct packages dependencies required to run the project's code (e.g. NumPy for tensors), as well as all the packages used during development (e.g. flake8 for code linting and IPython for interactive console sessions), are described in the `Pipfile`. Their precise downstream dependencies are described in `Pipfile.lock`.
+We use [pipenv](https://docs.pipenv.org) for managing project dependencies and Python environments (i.e. virtual environments). These dependencies are **not** to be confused with the package installation dependencies for the package under developement - i.e. those that need to be defined in the `install_requires` section of `setup.py`. All of the direct packages dependencies required to run the project's code (e.g. NumPy for tensors), as well as all the packages used during development (e.g. flake8 for code linting and IPython for interactive console sessions), are described in the `Pipfile`. Their precise downstream dependencies are crystallised in `Pipfile.lock`, which is used to guarentee repeatable (i.e. deterministic) builds.
 
 #### Installing Pipenv
 
@@ -101,9 +109,19 @@ pipenv run python3
 
 The `python3` command could just as well be `ipython3`.
 
+#### Automatic Loading of Environment Variables
+
+Pipenv will automatically pick-up and load any environment variables declared in the `.env` file, located in the package's root directory. For example, adding,
+
+```bash
+SPARK_HOME=applications/spark-2.3.1/bin
+```
+
+Will enable access to this variable within any Python program, via a call to `os.environ['SPARK_HOME']`. Note, that if any security credentials are placed here, then this file **must** be removed from source control - i.e. add `.env` to the `.gitignore` file to prevent potential security risks.
+
 #### Pipenv Shells
 
-Prepending `pipenv` to every command you want to run within the context of your Pipenv-managed virtual environment, can get very (verY tedious. This can be avoided by entering into a Pipenv-managed shell,
+Prepending `pipenv` to every command you want to run within the context of your Pipenv-managed virtual environment, can get (very) tedious. This can be avoided by entering into a Pipenv-managed shell,
 
 ```bash
 pipenv shell
@@ -113,13 +131,13 @@ Which is equivalent to 'activating' the virtual environment. Any command will no
 
 ### Running Unit Tests
 
-All test have been written using the [PyTest](https://docs.pytest.org/en/latest/) package. Tests are kept in the `tests` folder and can be run from the command line by - e.g. by evoking,
+All test have been written using the [PyTest](https://docs.pytest.org/en/latest/) package. Tests are kept in the `tests` folder and can be run from the command line by - e.g. by invoking,
 
 ```bash
 pipenv run pytest
 ```
 
-The tests suite is structured as an independent Python package as follows:
+The test suite is structured as an independent Python package as follows:
 
 ```bash
 tests/
@@ -130,7 +148,7 @@ tests/
  |   test_curves.py
 ```
 
-The `conftest.py` module is used by PyTest - in this particular instance for loading test data and building objects that will then be used by many other tests. These are referred to as 'fixtures' in PyTest - more details can be found [here](https://docs.pytest.org/en/latest/fixture.html).
+The `conftest.py` module is used by PyTest - in this particular instance for loading test data and building objects that will then be used by potentially many other tests. These are referred to as 'fixtures' in PyTest - more details can be found [here](https://docs.pytest.org/en/latest/fixture.html).
 
 ### Linting Code
 
@@ -140,7 +158,7 @@ I prefer to use [flake8](http://flake8.pycqa.org/en/latest/) for style guide enf
 pipenv run flake8 py_pkg
 ```
 
-Flake8 could easily be swapped-out for another tool using Pipenv as described above.
+Flake8 could easily be swapped-out for another tool by using Pipenv as described above.
 
 ### Static Type Checking
 
@@ -150,27 +168,27 @@ We have used the Python type annotation framework, together with the [MyPy packa
 pipenv run python -m mypy py_pkg/*.py
 ```
 
-MyPy options for this project are kept in the `mypy.ini` file that MyPy will look for by default. For more information on the fulls set of options, see the [mypy documentation](https://mypy.readthedocs.io/en/stable/config_file.html).
+MyPy options for this project can be defined in the `mypy.ini` file that MyPy will look for by default. For more information on the full set of options, see the [mypy documentation](https://mypy.readthedocs.io/en/stable/config_file.html).
 
 Examples of type annotation and type checking for library development can be found in the `py_pkg.curves.py` module. This should also be cross-referenced with the improvement to readability (and usability) that this has on package documentation.
 
 ### Documentation
 
-The documentation in the `docs` folder has have been built using [Sphinx](http://www.sphinx-doc.org). We have used the default 'quickstart' automatic configuration, which was originally triggered by executing,
+The documentation in the `docs` folder has been built using [Sphinx](http://www.sphinx-doc.org). We have used the default 'quickstart' automatic configuration, which was originally triggered by executing,
 
 ```bash
 pipenv run sphinx-quickstart
 ```
 
-The output is based primarily on the Docstrings in the source code, using the `autodoc` extension within Sphinx (specified during the 'quickstart'). The documentation can be built by running the following command,
+The output is based primarily on the Docstrings in the source code, using the `autodoc` extension within Sphinx (specified during the 'quickstart'). The contents for the entry point into the docs (`index.html`), is defined in the `index.rst` file, which itself imports the `modules.rst` file that lists all of the modules to document. The documentation can be built by running the following command,
 
 ```bash
 pipenv run sphinx-build -b html docs/source docs/build_html
 ```
 
-The resulting HTML documentation can accessed by opening `docs/build_html/index.html` in a web browser.
+The resulting HTML documentation can be accessed by opening `docs/build_html/index.html` in a web browser.
 
-A third party theme from [Read the Docs](https://readthedocs.org) has also been used, by installing the `sphinx_rtd_theme` as a development dependency and modifying `docs/source/config.py` as follows:
+My preferred third party theme from [Read the Docs](https://readthedocs.org) has also been used, by installing the `sphinx_rtd_theme` as a development dependency and modifying `docs/source/config.py` as follows:
 
 ```python
 import sphinx_rtd_theme
@@ -196,7 +214,7 @@ Both LaTeX and PDF versions can then be found in `docs/build_latex`.
 
 ### Building Deployable Distributions
 
-The recommended (and most pragmatic) way of deploy this package is to build a Python [wheel](https://wheel.readthedocs.io/en/stable/) and to then to install it in a fresh virtual environment on the target system. The exact build configuration is determined by the parameters in `setup.py`. Note, that this requires that all package dependencies also be specified in `setup.py`, regardless of their entry in `Pipfile`. For more information on Python packaging refer to the [Python Packaging User Guide](https://packaging.python.org) and the accompanying [sample project](https://github.com/pypa/sampleproject). To create the Python wheel run,
+The recommended (and most pragmatic) way of deploy this package is to build a Python [wheel](https://wheel.readthedocs.io/en/stable/) and to then to install it in a fresh virtual environment on the target system. The exact build configuration is determined by the parameters in `setup.py`. Note, that this requires that all package dependencies also be specified in the `install_requires` declaration in `setup.py`, **regardless** of their entry in `Pipfile`. For more information on Python packaging refer to the [Python Packaging User Guide](https://packaging.python.org) and the accompanying [sample project](https://github.com/pypa/sampleproject). To create the Python wheel run,
 
 ```bash
 pipenv run python setup.py bdist_wheel

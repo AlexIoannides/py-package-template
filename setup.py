@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import os
-
 from setuptools import setup
 
 # get package details from mds/__version__.py
@@ -10,15 +9,21 @@ here = os.path.abspath(os.path.dirname(__file__))
 with open(os.path.join(here, 'py_pkg', '__version__.py')) as f:
     exec(f.read(), about)
 
-print(about)
+# load the README file and use it as the long_description for PyPI
+with open('README.md', 'r') as f:
+    readme = f.read()
 
+# package configuration
 setup(
     name=about['__title__'],
     description=about['__description__'],
+    long_description=readme,
+    long_description_content_type='text/markdown',
     version=about['__version__'],
     author=about['__author__'],
     author_email=about['__author_email__'],
     url=about['__url__'],
+    python_requires=">=3.7.*",
     install_requires=['numpy', 'requests'],
     packages=['py_pkg'],
     include_package_data=True,
