@@ -1,13 +1,15 @@
 # Python Package Template Project
 
 [![image](https://img.shields.io/pypi/v/py-package-template.svg)](https://pypi.org/project/py-package-template/)
+[![Build Status](https://travis-ci.org/AlexIoannides/py-package-template.svg?branch=master)](https://travis-ci.org/AlexIoannides/py-package-template)
 
 The py-template-project package allows users to download the contents of this [GiHub repository](https://github.com/AlexIoannides/py-package-template),  containing a skeleton Python package project to be used as a template for kick-starting development of **any** type of Package; destined for upload to PyPI, or just for local install using Pip. The downloaded package includes the following components to aid rapid development without having to spend time cloning existing set-ups from other projects:
 
 - a minimal `setup.py` file;
 - testing with PyTest;
-- documentation (HTML and PDF) generated using Sphinx with auto-documentation setup; and,
-- an entry-point that allows the package to execute functions directly from the command line - e.g. to start a server, interact with a user, download a GitHub repository, etc..
+- documentation (HTML and PDF) generated using Sphinx with auto-documentation setup; 
+- an entry-point that allows the package to execute functions directly from the command line - e.g. to start a server, interact with a user, download a GitHub repository, etc.; and,
+- automated testing and deployment using Travis CI.
 
 A description of how to work with (and modify) each of these components, is provided in more detail in the sections that follow-on below, as well as in the documentation and within the example code bundled with the package.
 
@@ -225,3 +227,44 @@ This will create `build`, `py_package_template.egg-info` and `dist` directories 
 ```bash
 pipenv install path/to/your-package.whl
 ```
+
+### Automated Testing and Deployment using Travis CI
+
+We have chosen Travis for Continuous Integration (CI) as it integrates very easily with Python and GitHub (where I have granted it access to my public repositories). The configuration details are kept in the `.travis.yaml` file in the root directory:
+
+```yaml
+ncsudo: required
+
+language: python
+
+python:
+  - 3.7-dev
+
+install:
+  - pip install pipenv
+  - pipenv install --dev
+
+script:
+  - pipenv run pytest
+
+deploy:
+  provider: pypi
+  user: alexioannides
+  password:
+    secure: my-encrypted-pypi-password
+  on:
+    tags: true
+  distributions: bdist_wheel
+```
+
+Briefly, this instructs the Travis build server to:
+
+1. download, build and install Python 3.7;
+2. install Pipenv
+3. use Pipenv and `Pipfile.lock` to install **all** dependencies (dev dependencies are necessary for running PyTest);
+4. run all unit tests using PyTest;
+5. if the tests were run successfully and if we have pushed a new tag (i.e. a release) to the master branch then:
+    - build a Python wheel; and,
+    - push it to PyPI.org using my PyPI account credentials.
+
+Note that we provide Travis with an encrypted password, that was made using the Travis command line tool (downloaded using HomeBrew on OS X). For more details on this and PyPI deployment more generally see the [Travis CI documentation](https://docs.travis-ci.com/user/deployment/pypi/#stq=&stp=0).
