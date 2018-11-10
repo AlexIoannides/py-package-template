@@ -14,7 +14,9 @@
 #
 import os
 import sys
+
 sys.path.insert(0, os.path.abspath('../..'))
+from py_pkg.__version__ import __version__
 
 
 # -- Project information -----------------------------------------------------
@@ -24,9 +26,9 @@ copyright = '2018, Alex Ioannides'
 author = 'Alex Ioannides'
 
 # The short X.Y version
-version = ''
+version = __version__[:-2]
 # The full version, including alpha/beta/rc tags
-release = '0.1.0'
+release = __version__
 
 
 # -- General configuration ---------------------------------------------------
