@@ -20,7 +20,7 @@ This is obviously a opinionated view of how a Python package project ought to be
 Install and update using [pip](https://pip.pypa.io/en/stable/quickstart/):
 
 ```bash
-pip3 install py-template-project
+pip3 install py-package-template
 ```
 
 ## Downloading a Python Package Template Project
