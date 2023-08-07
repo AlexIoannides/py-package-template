@@ -2,7 +2,7 @@
 py_pkg.curves.py
 ~~~~~~~~~~~~~~~~
 
-This exaple module contains classes that model economic supply and
+This example module contains classes that model economic supply and
 demand curves and compute values such as equilibrium prices. 
 
 It also serves as a demonstration for using type annotations and
@@ -80,7 +80,7 @@ class DemandCurve:
         containing `price` and `demand` keys.
     :type data: Sequence[Dict[str, int]]
     :raises ValueError: if zero price data is encountered.
-    :raises DemandMonotonicityError: When demand data in non-increasing
+    :raises DemandMonotonicityError: When demand data is non-increasing
         in price.
     """
 
@@ -252,7 +252,7 @@ class Equilibrium:
 class EconShockScenario(metaclass=abc.ABCMeta):
     """Abstract class for representing economic shock scenarios.
 
-    Each instance represents a single economic shock, as measure by the
+    Each instance represents a single economic shock, as measured by the
     impact of the shock on the supply and/or demand curves for a
     product.
 
@@ -286,7 +286,7 @@ class EconShockScenario(metaclass=abc.ABCMeta):
         :type curve: Curve
         :raises TypeError: if curve is not SupplyCurve or DemandCurve
         :return: The supply or demand curve after the economic shock
-            scenario has bee applied.
+            scenario has been applied.
         :rtype: Curve
         """
 
@@ -304,7 +304,7 @@ none_shock = NoneShock()
 
 
 class HorizPriceShock(EconShockScenario):
-    """Horizontal price shocks (tranlations to supply/demand curves)."""
+    """Horizontal price shocks (translations to supply/demand curves)."""
 
     def apply(self, curve: Curve) -> Curve:
         if isinstance(curve, SupplyCurve):
