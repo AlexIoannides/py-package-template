@@ -25,7 +25,7 @@ pip3 install py-package-template
 
 ## Downloading a Python Package Template Project
 
-To down load the latest version of the Python Package Template project located in [this GiHub repository](https://github.com/AlexIoannides/py-package-template), execute the following command from the command line:
+To download the latest version of the Python Package Template project located in [this GiHub repository](https://github.com/AlexIoannides/py-package-template), execute the following command from the command line:
 
 ```bash
 py-package-template install
